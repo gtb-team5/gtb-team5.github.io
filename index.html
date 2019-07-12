@@ -1,37 +1,46 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>音声認識サンプル</title>
-</head>
-<body>
-    <h2>音声認識サンプル</h2>
-    <button id="start_button">start</button>
-    <div id="content"></div>
-
-<script>
-    //音声認識の準備・日本語の使用を宣言
-    const speech = new webkitSpeechRecognition();
-    speech.lang = 'ja-JP';
-    
-    //DOM操作用のオブジェクトを用意
-    const startButton = document.getElementById('start_button');
-    const content = document.getElementById('content');
-
-    startButton.addEventListener('click',function(){
-        //音声認識スタート
-        speech.start();
-    });
-
-    speech.addEventListener('result',function(e){
-        //音声認識した結果をコンソールに表示
-        console.log(e);
-
-        //音声認識で取得した情報を,HTMLに表示する処理
-        const text = e.results[0][0].transcript;
-        content.innerText = text;
-    });
-
-</script>
-<body>
 <html>
+  <head>
+    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-firestore.js"></script>
+    <script>
+      // Initialize Firebase
+     // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyApupTZW_6WvuTnf7b3o9AeOgxv4Nsbpuk",
+        authDomain: "gtb-team5.firebaseapp.com",
+        databaseURL: "https://gtb-team5.firebaseio.com",
+        projectId: "gtb-team5",
+        storageBucket: "gtb-team5.appspot.com",
+        messagingSenderId: "663345784773",
+        appId: "1:663345784773:web:9855dd622cd52158"
+      }
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      const firestore= firebase.firestore();
+      const settings = { timestampsInSnapshots: true };
+      firestore.settings(settings);
+
+      // この data をドキュメント名にする。
+      // 今回は、サンプルなので LA のデータをいれてみる    
+      firestore.collection("data").doc("LA").set({
+        name: "Los Angeles",
+        state: "CA",
+        country: "USA"
+      })
+      .then(function() {
+        console.log("Document successfully written!");
+      })
+      .catch(function(error) {
+        console.error("Error writing document: ", error);
+      });
+    </script>
+  </head>
+  <body>
+    <p>add data!!</p>
+  </body>
+</html>
+
+
+
