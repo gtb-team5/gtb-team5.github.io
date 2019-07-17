@@ -7,9 +7,6 @@
     </head>
     <body>
         <div>
-            <input id="name" placeholder="名前">
-            <input id="message" placeholder="メッセージ">
-            <button id="send">投稿</button>
         </div>
         <ul id="messages"></ul>
         <p>add data!!</p>
@@ -28,12 +25,19 @@
 
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
+            var messagesRef = firebase.database().ref().child('speech_messages')
 
-            var messagesRef = firebase.database().ref().child('messages')
-            messagesRef.push({
-                name: $('#name').val(),
-                body: $('#message').val()
+            // Firebaseの既存メッセージを表示
+            messagesRef.on('child_added', function(snapshot) {
+                var msg = snapshot.val();
+                console.log(msg.body);
+                $('<li>').text(msg.name + ': ' + msg.minutes).prependTo('#messages');
             });
+
+            messagesRef.push({
+                name: "aa2",
+                body: "bb"
+            })
         </script>
     </body>
 </html>
