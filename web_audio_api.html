@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>録音サンプル</title>
+</head>
+<body>
+<h2>録音サンプル</h2>
+<!-- input type="file" accept="audio/*" capture="microphone" -->
+
+<audio id="player" controls></audio>
+
+<script>
+    var player = document.getElementById('player');
+
+    var handleSuccess = function(stream) {
+        if (window.URL) {
+            player.src = window.URL.createObjectURL(stream);
+        } else {
+            player.src = stream;
+        }
+    };
+
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        .then(handleSuccess)
+</script>
+
+<div id="content"></div>
+<body>
+<html>

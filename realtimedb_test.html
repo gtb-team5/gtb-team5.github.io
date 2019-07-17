@@ -3,12 +3,10 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
     </head>
     <body>
         <div>
-            <input id="name" placeholder="名前">
-            <input id="message" placeholder="メッセージ">
-            <button id="send">投稿</button>
         </div>
         <ul id="messages"></ul>
         <p>add data!!</p>
@@ -27,12 +25,19 @@
 
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
+            var messagesRef = firebase.database().ref().child('speech_messages')
 
-            var messagesRef = firebase.database().ref().child('messages')
-            messagesRef.push({
-                name: $('#name').val(),
-                body: $('#message').val()
+            // Firebaseの既存メッセージを表示
+            messagesRef.on('child_added', function(snapshot) {
+                var msg = snapshot.val();
+                console.log(msg.body);
+                $('<li>').text(msg.name + ': ' + msg.minutes).prependTo('#messages');
             });
+
+            messagesRef.push({
+                name: "aa2",
+                body: "bb"
+            })
         </script>
     </body>
 </html>
