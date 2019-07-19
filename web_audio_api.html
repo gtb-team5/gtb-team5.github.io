@@ -2,35 +2,69 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>録音サンプル</title>
+    <title>canvasで図形を描く</title>
 </head>
 <body>
-<h2>録音サンプル</h2>
-<!-- input type="file" accept="audio/*" capture="microphone" -->
+<button id="start" >start</button>
+<button id="stop" >stop</button>
 
-<audio id="player" controls></audio>
 
 <script>
-    var player = document.getElementById('player');
 
-    var handleSuccess = function(stream) {
-        var context = new AudioContext();
-        var input = context.createMediaStreamSource(stream)
-        var processor = context.createScriptProcessor(1024,1,1);
+    const start = document.querySelector('#start');
+    const stop = document.querySelector('#stop');
 
-        source.connect(processor);
-        processor.connect(context.destination);
+    let mediaRecorder = null;
+    let mediaStream = null;
 
-        processor.onaudioprocess = function(e){
-            // Do something with the data, i.e Convert this to WAV
-            console.log(e.inputBuffer);
-        };
-        // player.srcObject = stream;  //メモリリークしてそう
-    };
+    start.addEventListener('click', () => {
+        start.disabled = true;
+        stop.disabled = false;
 
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then(handleSuccess)
+        const chunks = [];
+        mediaRecorder = new MediaRecorder(mediaStream, {
+            mimeType: 'audio/webm'
+        });
+
+        mediaRecorder.addEventListener('dataavailable', e => {
+            if (e.data.size > 0) {
+                chunks.push(e.data);
+            }
+        });
+
+        mediaRecorder.addEventListener('stop', ()　=> {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob(chunks));
+            a.download = 'test.webm';
+            a.click();
+        });
+
+        mediaRecorder.start();
+    });
+
+    stop.addEventListener('click', () => {
+        if (mediaRecorder === null) {
+            return;
+        }
+
+        start.disabled = false;
+        stop.disabled = true;
+
+        mediaRecorder.stop();
+        mediaRecorder = null;
+    });
+
+    navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: false
+    }).then(stream => {
+        mediaStream = stream;
+
+        // ...
+    }).catch(error => {
+        console.log(error);
+    });
+
 </script>
-
-<body>
+</body>
 <html>
