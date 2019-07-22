@@ -13,7 +13,8 @@
         <h2>音声認識サンプル</h2>
         <button id="start_button">start</button>
         <div id="content"></div>
-
+        <div id="div1"></div>
+        <ol id="list">wait...</ol>
         <script>
         // Firebaseに関する処理---------------------------------------------------------------------------------
         // Your web app's Firebase configuration
@@ -28,8 +29,12 @@
         }
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        var messagesRef = firebase.database().ref().child('speech_messages')
+        try{
+            firebase.initializeApp(firebaseConfig);
+        }catch (e) {
+            console.log(e);
+        }
+        var messagesRef = firebase.database().ref('speech_messages');
 
 
         //音声認識の準備・日本語の使用を宣言
@@ -57,6 +62,26 @@
                 minutes: text
             });
         });
+
+        //結果を表示として追加
+        // Firebaseの既存メッセージを表示
+        messagesRef.on('value',(snapshot)=>{
+            let data = snapshot.val();
+            let result = '';
+            for(let i in data) {
+                let message = data[i];
+                const div1 = document.getElementById("div1");
+                result += '<li>' + message.minutes;
+
+                document.querySelector('#list').innerHTML = result;
+            }
+        })
+
+        //messagesRef.on('child_added', function(snapshot) {
+        //    var msg = snapshot.val();
+        //    console.log(msg.body);
+        //   $('<li>').text(msg.name + ': ' + msg.minutes).prependTo('#messages');
+        //});
 
         </script>
     <body>
