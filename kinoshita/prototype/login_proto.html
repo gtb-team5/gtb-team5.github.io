@@ -26,10 +26,11 @@
 
             firebase.auth().onAuthStateChanged((user) =>{
                 if(user){
+                    //初めからログインできてる時はこの画面に行くよ
                     console.log('auth user', user);
                     document.querySelector('#msg').textContent = '"' +
                         user.email + '" logined!';
-                    //バグあり todo
+                    window.location.href = 'management_proto.html';
                 }
             });
 
@@ -40,11 +41,11 @@
                 firebase.auth().signInWithEmailAndPassword(email, password)
                     .then((result) => {
                         console.log('sign in successfully.');
+                        window.location.href = 'management_proto.html';
                     }).catch((error) => {
                     console.log(error.message);
                     document.querySelector('#msg').textContent =
                         'fail to login...';
-                    //サインアウト？
                 });
             }
 
@@ -57,9 +58,9 @@
     </head>
 
     <body>
-    <h1>Sample Page</h1>
+    <h1>GIJIGORI Login Page</h1>
+    <p>このページにはバグが残っているから注意</p>
     <p id = "msg">no login...</p>
-    <div id = "firebaseui-auth-container"></div>
     <table>
         <tr><th>Email</th>
             <td><input type = "email" id = "email"></td></tr>
