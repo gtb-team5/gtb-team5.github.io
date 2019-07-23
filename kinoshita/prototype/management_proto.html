@@ -29,12 +29,12 @@
         <p>GIJIGORIのメインページだよ！</p>
 
         <button type="button" onclick="logout();">ログアウト</button>
-        </br></br>
+    <br><br>
         <button type="button" onclick="location.href='./edit_proto.html'">編集画面だよ！</button>
         <button type="button" onclick="location.href='./share_proto.html'">共有画面だよ！</button>
         <button type="button" onclick="location.href='./user_proto.html'">ユーザー設定だよ！</button>
-        </br></br>
-        <button type="button" onclick="logout();">議事録作成開始だよ！</button>
+    <br><br>
+    <button id="start_button">議事録作成開始だよ！</button>
 
     <script>
         function logout(){
@@ -47,6 +47,49 @@
                 });
             });
         }
+    </script>
+
+    <script>
+        //音声認識の準備・日本語の使用を宣言
+        const speechRecognition = new webkitSpeechRecognition();
+        speechRecognition.lang = 'ja-JP';
+
+        //DOM操作用のオブジェクトを用意
+        const startButton = document.getElementById('start_button');
+        const content = document.getElementById('content');
+
+        startButton.addEventListener('click', function () {
+            //音声認識スタート
+            speechRecognition.start();
+        });
+
+        speechRecognition.addEventListener('result', function (e) {
+            //音声認識した結果をコンソールに表示
+            console.log(e);
+
+            //音声認識で取得した情報を,HTMLに表示する処理
+            const text = e.results[0][0].transcript;
+            content.innerText = text;
+            //Firebaseへのデータの書き込み
+            messagesRef.push({
+                minutes: text
+            });
+        });
+
+        //結果を表示として追加
+        // Firebaseの既存メッセージを表示
+        messagesRef.on('value', (snapshot) => {
+            let data = snapshot.val();
+            let result = '';
+            for (let i in data) {
+                let message = data[i];
+                const div1 = document.getElementById("div1");
+                result += '<li>' + message.minutes;
+
+                document.querySelector('#list').innerHTML = result;
+            }
+        })
+
     </script>
     </body>
 </html>
