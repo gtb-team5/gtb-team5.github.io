@@ -40,36 +40,32 @@
                 let password = document.querySelector('#password').value;
                 firebase.auth().signInWithEmailAndPassword(email, password)
                     .then((result) => {
+                        //ログイン成功するとこっち
                         console.log('sign in successfully.');
                         window.location.href = 'management_proto.html';
                     }).catch((error) => {
+                    //ログイン失敗するとこっち
                     console.log(error.message);
                     document.querySelector('#msg').textContent =
                         'fail to login...';
                 });
-            }
-
-            //logout
-            function logout(){
-                firebase.auth().signOut();
-                document.getElementById('msg').textContent = 'no login...';
             }
         </script>
     </head>
 
     <body>
     <h1>GIJIGORI Login Page</h1>
-    <p>このページにはバグが残っているから注意</p>
-    <p id = "msg">no login...</p>
+    <p id="msg">no login...</p>
     <table>
-        <tr><th>Email</th>
-            <td><input type = "email" id = "email"></td></tr>
-        <tr><th>Password</th>
-            <td><input type = "password" id = "password"></td></tr>
-        <tr><th></th><tr>
-        <button onclick = "login();">Login</button>
-        <button onclick = "logout();">Logout</button>
-        </th></tr>
+        <tr>
+            <th>Email</th>
+            <td><input type="email" id="email"></td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td><input type="password" id="password"></td>
+        </tr>
     </table>
+    <button onclick="login();">Login</button>
     </body>
 </html>

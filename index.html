@@ -13,7 +13,6 @@
         <h2>音声認識サンプル</h2>
         <button id="start_button">start</button>
         <div id="content"></div>
-        <div id="div1"></div>
         <ol id="list">wait...</ol>
         <script>
         // Firebaseに関する処理---------------------------------------------------------------------------------
@@ -70,7 +69,6 @@
             let result = '';
             for(let i in data) {
                 let message = data[i];
-                const div1 = document.getElementById("div1");
                 result += '<li>' + message.minutes;
 
                 document.querySelector('#list').innerHTML = result;
