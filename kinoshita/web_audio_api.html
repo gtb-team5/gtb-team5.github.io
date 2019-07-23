@@ -1,70 +1,70 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>canvasで図形を描く</title>
-</head>
-<body>
-<button id="start" >start</button>
-<button id="stop" >stop</button>
+    <head>
+        <meta charset="UTF-8">
+        <title>canvasで図形を描く</title>
+    </head>
+    <body>
+        <button id="start" >start</button>
+        <button id="stop" >stop</button>
 
 
-<script>
+        <script>
 
-    const start = document.querySelector('#start');
-    const stop = document.querySelector('#stop');
+            const start = document.querySelector('#start');
+            const stop = document.querySelector('#stop');
 
-    let mediaRecorder = null;
-    let mediaStream = null;
+            let mediaRecorder = null;
+            let mediaStream = null;
 
-    start.addEventListener('click', () => {
-        start.disabled = true;
-        stop.disabled = false;
+            start.addEventListener('click', () => {
+                start.disabled = true;
+                stop.disabled = false;
 
-        const chunks = [];
-        mediaRecorder = new MediaRecorder(mediaStream, {
-            mimeType: 'audio/webm'
-        });
+                const chunks = [];
+                mediaRecorder = new MediaRecorder(mediaStream, {
+                    mimeType: 'audio/webm'
+                });
 
-        mediaRecorder.addEventListener('dataavailable', e => {
-            if (e.data.size > 0) {
-                chunks.push(e.data);
-            }
-        });
+                mediaRecorder.addEventListener('dataavailable', e => {
+                    if (e.data.size > 0) {
+                        chunks.push(e.data);
+                    }
+                });
 
-        mediaRecorder.addEventListener('stop', ()　=> {
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(new Blob(chunks));
-            a.download = 'test.webm';
-            a.click();
-        });
+                mediaRecorder.addEventListener('stop', ()　=> {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(new Blob(chunks));
+                    a.download = 'test.webm';
+                    a.click();
+                });
 
-        mediaRecorder.start();
-    });
+                mediaRecorder.start();
+            });
 
-    stop.addEventListener('click', () => {
-        if (mediaRecorder === null) {
-            return;
-        }
+            stop.addEventListener('click', () => {
+                if (mediaRecorder === null) {
+                    return;
+                }
 
-        start.disabled = false;
-        stop.disabled = true;
+                start.disabled = false;
+                stop.disabled = true;
 
-        mediaRecorder.stop();
-        mediaRecorder = null;
-    });
+                mediaRecorder.stop();
+                mediaRecorder = null;
+            });
 
-    navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video: false
-    }).then(stream => {
-        mediaStream = stream;
+            navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: false
+            }).then(stream => {
+                mediaStream = stream;
 
-        // ...
-    }).catch(error => {
-        console.log(error);
-    });
+                // ...
+            }).catch(error => {
+                console.log(error);
+            });
 
-</script>
-</body>
+        </script>
+    </body>
 <html>

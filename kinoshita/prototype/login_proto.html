@@ -28,7 +28,7 @@
                 if(user){
                     console.log('auth user', user);
                     document.querySelector('#msg').textContent = '"' +
-                            user.email + '" logined!';
+                        user.email + '" logined!';
                     //バグあり todo
                 }
             });
@@ -41,11 +41,11 @@
                     .then((result) => {
                         console.log('sign in successfully.');
                     }).catch((error) => {
-                        console.log(error.message);
-                        document.querySelector('#msg').textContent =
-                            'fail to login...';
-                        //サインアウト？
-                    });
+                    console.log(error.message);
+                    document.querySelector('#msg').textContent =
+                        'fail to login...';
+                    //サインアウト？
+                });
             }
 
             //logout
@@ -57,18 +57,18 @@
     </head>
 
     <body>
-        <h1>Sample Page</h1>
-        <p id = "msg">no login...</p>
-        <div id = "firebaseui-auth-container"></div>
-        <table>
-            <tr><th>Email</th>
+    <h1>Sample Page</h1>
+    <p id = "msg">no login...</p>
+    <div id = "firebaseui-auth-container"></div>
+    <table>
+        <tr><th>Email</th>
             <td><input type = "email" id = "email"></td></tr>
-            <tr><th>Password</th>
+        <tr><th>Password</th>
             <td><input type = "password" id = "password"></td></tr>
-            <tr><th></th><tr>
-                <button onclick = "login();">Login</button>
-                <button onclick = "logout();">Logout</button>
-            </th></tr>
-        </table>
+        <tr><th></th><tr>
+        <button onclick = "login();">Login</button>
+        <button onclick = "logout();">Logout</button>
+        </th></tr>
+    </table>
     </body>
 </html>
