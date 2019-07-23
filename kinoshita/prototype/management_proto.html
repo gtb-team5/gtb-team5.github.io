@@ -36,6 +36,8 @@
     <br><br>
     <button id="start_button">議事録作成開始だよ！</button>
 
+    <div id="content"></div>
+    <ol id="list">wait...</ol>
     <script>
         function logout(){
             firebase.auth().onAuthStateChanged((user) => {
