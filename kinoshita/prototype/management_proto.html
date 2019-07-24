@@ -26,16 +26,13 @@
             var messagesRef = firebase.database().ref('speech_messages');
         </script>
     </head>
-
-    <br>
         <p>GIJIGORIのメインページだよ！</p>
-
         <button type="button" onclick="logout();">ログアウト</button>
-    <button id="start_button">議事録作成開始だよ！</button>
+        <button id="start_button">議事録作成開始だよ！</button>
 
-    <div id="content"></div>
-    <div id="div2">wait...</div>
-    <ol id="list">wait...</ol>
+        <div id="content"></div>
+        <div id="div1">wait...</div>
+
     <script>
         function logout(){
             firebase.auth().onAuthStateChanged((user) => {
@@ -81,14 +78,22 @@
         messagesRef.on('value', (snapshot) => {
             let data = snapshot.val();
             let result = '';
+            //wait...を消去する処理
+            document.querySelector('#div1').innerHTML = "";
+            //firebase内の値を取ってきて表示
             for (let i in data) {
-                let message = data[i];
-                const div1 = document.getElementById("div1");
-                result += '<li>' + message.minutes;
 
-                document.querySelector('#list').innerHTML = result;
+                //テキストボックスを生成してそこに表示
+                let message = data[i];
+                //const div1 = document.getElementById("div1");
+                const input = document.createElement("input");
+                input.setAttribute("type","text");
+                input.setAttribute("value",message.minutes);
+                div1.appendChild(input);
+                div1.appendChild(document.createElement('br'));
             }
         })
+
 
     </script>
     </body>
