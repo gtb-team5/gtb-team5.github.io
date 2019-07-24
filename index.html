@@ -35,7 +35,6 @@
         }
         var messagesRef = firebase.database().ref('speech_messages');
 
-
         //音声認識の準備・日本語の使用を宣言
         const speechRecognition = new webkitSpeechRecognition();
         speechRecognition.lang = 'ja-JP';
@@ -64,6 +63,7 @@
 
         //結果を表示として追加
         // Firebaseの既存メッセージを表示
+
         messagesRef.on('value',(snapshot)=>{
             let data = snapshot.val();
             let result = '';

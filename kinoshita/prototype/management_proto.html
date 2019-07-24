@@ -4,6 +4,7 @@
         <title>GIJIGORIのLPだよ！</title>
         <script src = "https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
         <script src = "https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
         <script>
             //Iinitialize Firebase
             var firebaseConfig = {
@@ -22,6 +23,7 @@
             }catch (e) {
                 console.log(e);
             }
+            var messagesRef = firebase.database().ref('speech_messages');
         </script>
     </head>
 
@@ -29,14 +31,10 @@
         <p>GIJIGORIのメインページだよ！</p>
 
         <button type="button" onclick="logout();">ログアウト</button>
-    <br><br>
-        <button type="button" onclick="location.href='./edit_proto.html'">編集画面だよ！</button>
-        <button type="button" onclick="location.href='./share_proto.html'">共有画面だよ！</button>
-        <button type="button" onclick="location.href='./user_proto.html'">ユーザー設定だよ！</button>
-    <br><br>
     <button id="start_button">議事録作成開始だよ！</button>
 
     <div id="content"></div>
+    <div id="div2">wait...</div>
     <ol id="list">wait...</ol>
     <script>
         function logout(){
