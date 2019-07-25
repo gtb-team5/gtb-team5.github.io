@@ -14,15 +14,17 @@
             var memberRef = null;
 
 
-            //----下は同時に変更を必ず行わないといけない,DBと参照とその表記メソッド
+            //----下は議事録が変更された時同時に変更を必ず行わないといけない,DBと参照とその表記メソッド
             //議事録のid
             var minutesid = null;
+            var messageAllid = null;
+
             //firebaseの議事録への参照・表記用オブジェクト
             var messagesRef　= null;
             var renderMessageobj = null;
 
             //firebaseの議事録全体への参照・表記用オブジェクト
-            var messageAllRef = null;
+            var messagesAllRef = null;
             var renderMessageAllobj = null;
 
             //----------------------------------------画面表記用の関数----------------------------------
@@ -47,6 +49,7 @@
             };
 
             function renderMessage(minutespass){
+
                 //結果を表示として追加
                 // Firebaseの既存メッセージを表示
                 //DBへのアクセスを取得
@@ -66,19 +69,24 @@
             };
 
             function renderMessageAll(minutesAllPass){
+                //todo
                 //結果を表示として追加
                 // Firebaseの既存メッセージを表示
                 //DBへのアクセスを取得
-                messagesRef = firebase.database().ref(minutesAllPass);
-                messagesRef.on('value', (snapshot) => {
+                messagesAllRef = firebase.database().ref(minutesAllPass);
+                messagesAllRef.on('value', (snapshot) => {
                     let data = snapshot.val();
                     let result = '';
-                    //wait...を消去する処理
-                    document.querySelector('#div1').innerHTML = "";
                     //firebase内の値を取ってきて表示
                     //表示
-                    let message = data[0];
-                    document.querySelector('#div1').innerHTML = message;
+                    document.querySelector('#div2').innerHTML = "";
+                    //firebase内の値を取ってきて表示
+                    for (let i in data) {
+                        let message = data[i];
+                        result += message.minutes + '<br>';
+                        document.querySelector('#div2').innerHTML = result;
+                    }
+                    //document.querySelector('#div2').innerHTML = '<textarea name="area" rows="4" cols="40">' + messageall.minutes + '</textarea>';
 
                 })
             };
@@ -166,9 +174,9 @@
                     var now   = new Date();
                     var month = now.getMonth();    //月
                     var day   = now.getDate();     //日
+
+                    //todo タイトルの変更
                     minutesid = memberRef.push({
-                        //todo タイトルの変更
-                        //memberDBに色々ついか
                         title: "ギジゴリ",
                         month: month,
                         day  : day
@@ -176,6 +184,10 @@
                     //firebaseの議事録への参照
                     var messagesPath　= "messages/" + uid + '/' + minutesid;
                     renderMessageobj = renderMessage(messagesPath);
+
+                    //firebaseの議事録Allへの参照 todo
+                    var messagesAllPath　= "messagesAll/" + uid + '/' + minutesid;
+                    renderMessageAllobj = renderMessageAll(messagesAllPath);
                 }
             });
 
@@ -185,6 +197,16 @@
                 content.innerText = text;
                 //Firebaseへのデータの書き込み
                 messagesRef.push({
+                    minutes: text
+                });
+
+                messagesAllRef.push({
+                    //todo
+                    minutes: text
+                });
+
+                messagesAllRef.update({
+                    //todo
                     minutes: text
                 });
             });
