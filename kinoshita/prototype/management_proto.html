@@ -24,7 +24,19 @@
             }catch (e) {
                 console.log(e);
             }
+
+            //ユーザーの値取得
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    //var userID =
+                } else {
+                    //todo ログインしていない時の処理
+                }
+            });
+
+            //DBへのアクセスを取得
             var messagesRef = firebase.database().ref('speech_messages');
+            var memberRef = firebase.database().ref('member/n1yHTUipk5bHJZGPNac2snKdLP03');
         </script>
     </head>
         <p>GIJIGORIのメインページだよ！</p>
@@ -34,71 +46,84 @@
         <div id="content"></div>
         <div id="div1">wait...</div>
 
-    <script>
-        function logout(){
-            firebase.auth().onAuthStateChanged((user) => {
-                firebase.auth().signOut().then(() => {
-                    console.log("ログアウトしました");
-                    window.location.href = 'lp_proto.html';
-                }).catch((error) => {
-                    console.log(`ログアウト時にエラーが発生しました (${error})`);
+        <ol id="list">wait...</ol>
+
+        <script>
+            function logout(){
+                firebase.auth().onAuthStateChanged((user) => {
+                    firebase.auth().signOut().then(() => {
+                        console.log("ログアウトしました");
+                        window.location.href = 'lp_proto.html';
+                    }).catch((error) => {
+                        console.log(`ログアウト時にエラーが発生しました (${error})`);
+                    });
+                });
+            }
+        </script>
+
+        <script>
+            //音声認識の準備・日本語の使用を宣言
+            const speechRecognition = new webkitSpeechRecognition();
+            speechRecognition.lang = 'ja-JP';
+
+            //DOM操作用のオブジェクトを用意
+            const startButton = document.getElementById('start_button');
+            const content = document.getElementById('content');
+
+            startButton.addEventListener('click', function () {
+                //音声認識スタート
+                speechRecognition.start();
+            });
+
+            speechRecognition.addEventListener('result', function (e) {
+                //音声認識で取得した情報を,HTMLに表示する処理
+                const text = e.results[0][0].transcript;
+                content.innerText = text;
+                //Firebaseへのデータの書き込み
+                messagesRef.push({
+                    minutes: text
                 });
             });
-        }
-    </script>
 
-    <script>
-        //音声認識の準備・日本語の使用を宣言
-        const speechRecognition = new webkitSpeechRecognition();
-        speechRecognition.lang = 'ja-JP';
+            //結果を表示として追加
+            // Firebaseの既存メッセージを表示
+            messagesRef.on('value', (snapshot) => {
+                let data = snapshot.val();
+                let result = '';
+                //wait...を消去する処理
+                document.querySelector('#div1').innerHTML = "";
+                //firebase内の値を取ってきて表示
+                for (let i in data) {
 
-        //DOM操作用のオブジェクトを用意
-        const startButton = document.getElementById('start_button');
-        const content = document.getElementById('content');
+                    //テキストボックスを生成してそこに表示
+                    let message = data[i];
+                    const div1 = document.getElementById("div1");
+                    const input = document.createElement("input");
+                    input.setAttribute("type","text");
+                    input.setAttribute("maxlength","100000");
+                    input.setAttribute("size","50");
+                    input.setAttribute("value",message.minutes);
+                    div1.appendChild(input);
+                    div1.appendChild(document.createElement('br'));
+                }
+            })
 
-        startButton.addEventListener('click', function () {
-            //音声認識スタート
-            speechRecognition.start();
-        });
-
-        speechRecognition.addEventListener('result', function (e) {
-            //音声認識した結果をコンソールに表示
-            console.log(e);
-
-            //音声認識で取得した情報を,HTMLに表示する処理
-            const text = e.results[0][0].transcript;
-            content.innerText = text;
-            //Firebaseへのデータの書き込み
-            messagesRef.push({
-                minutes: text
-            });
-        });
-
-        //結果を表示として追加
-        // Firebaseの既存メッセージを表示
-        messagesRef.on('value', (snapshot) => {
-            let data = snapshot.val();
-            let result = '';
-            //wait...を消去する処理
-            document.querySelector('#div1').innerHTML = "";
-            //firebase内の値を取ってきて表示
-            for (let i in data) {
-
-                //テキストボックスを生成してそこに表示
-                let message = data[i];
-                const div1 = document.getElementById("div1");
-                const input = document.createElement("input");
-                input.setAttribute("type","text");
-                input.setAttribute("maxlength","100000");
-                input.setAttribute("size","50");
-                input.setAttribute("value",message.minutes);
-                div1.appendChild(input);
-                div1.appendChild(document.createElement('br'));
-                console.log(div1);
-            }
-        })
-
-
-    </script>
+            // Firebaseの会員から議事録のメッセージを取得。
+            memberRef.on('value', (snapshot) => {
+                let data = snapshot.val();
+                let result = '';
+                //firebase内の値を取ってきて表示
+                for (let i in data) {
+                    let minutes = data[i];
+                    result += '<li>' + minutes.month + '/' + minutes.day + '/' + minutes.title ;
+                    if(result != null) {
+                    //この判定を省略するとエラーを吐くので注意
+                        document.querySelector('#list').innerHTML = result;
+                    }else{
+                        document.querySelector('#list').innerHTML = "議事録はありません";
+                    }
+                }
+            })
+        </script>
     </body>
 </html>
