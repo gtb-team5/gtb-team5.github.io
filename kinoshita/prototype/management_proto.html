@@ -5,6 +5,7 @@
         <script src = "https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
         <script src = "https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+        <script src="https://unpkg.com/vue"></script>
         <script>
             //Iinitialize Firebase
             var firebaseConfig = {
@@ -85,12 +86,15 @@
 
                 //テキストボックスを生成してそこに表示
                 let message = data[i];
-                //const div1 = document.getElementById("div1");
+                const div1 = document.getElementById("div1");
                 const input = document.createElement("input");
                 input.setAttribute("type","text");
+                input.setAttribute("maxlength","100000");
+                input.setAttribute("size","50");
                 input.setAttribute("value",message.minutes);
                 div1.appendChild(input);
                 div1.appendChild(document.createElement('br'));
+                console.log(div1);
             }
         })
 
