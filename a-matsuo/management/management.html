@@ -10,24 +10,189 @@
         <script src="https://unpkg.com/vue"></script>
         <meta charset="UTF-8"> 
         <script>
-                $(window).on('load',function(){
-                    $('#content').load('test.html');
-                });
+
+            //-----------------------------------kinoshita----------------------------------------------------
+
+            //------------------------------------議事録やユーザーに関する変数やfirebaseへの参照用変数---------------
+            //ユーザーに関する定義と参照
+            var uid= null;
+            var memberRef = null;
+
+
+            //----下は議事録が変更された時同時に変更を必ず行わないといけない,DBと参照とその表記メソッド
+            //議事録のid
+            var minutesid = null;
+            var messageAllid = null;
+
+            //firebaseの議事録への参照・表記用オブジェクト todo　議事録選択
+            var messagesRef　= null;
+            var renderMessageobj = null;
+
+            //firebaseの議事録全体への参照・表記用オブジェクト todo 議事録選択
+            var messagesAllRef = null;
+            var renderMessageAllobj = null;
+
+
+            //----------------------------------------画面表記用の関数----------------------------------
+            // Firebaseの会員から議事録のメ
+            // ッセージを取得
+            function renderMinutes(uid){
+                memberRef = firebase.database().ref('member/'+ uid);
+                memberRef.on('value', (snapshot) => {
+                    let data = snapshot.val();
+                    let result = '';
+                    //firebase内の値を取ってきて表示
+                    //console.log(data);
+                    let keys = Object.keys(data);
+                    //console.log(keys);
+                    for (let i = 0; i < keys.length; i++) {
+                        //todo
+                        let minutes = data[keys[i]];
+                        //console.log(keys[i]);
+                        result += '<div class="gijiroku_line_up"><div class="gijiroku_div"><div class="gijiroku_date">'
+                            + minutes.month + '/' + minutes.day + '</div><div class="gijiroku_name">' + minutes.title
+                            +'</div><div><a href="#" class="select_button" style="text-decoration:none;" data-value="' + keys[i] + '"><div class="button_1 select_btn"><span>選択する</span></div></a><a href="#" style="text-decoration: none;"><div class="button_1"><span>共有する</span></div></a></div></div></div>';
+                        //+'</div><a href="#"><img class="edit_icon" src="img/kyouyuu.png" width="160px"></a></div></div>';
+
+
+
+
+
+                      if (result != null) {
+                          //この判定を省略するとエラーを吐くので注意
+                          document.querySelector('#kyouyuu_content').innerHTML = result;
+
+                          const selectButton = document.querySelectorAll('.select_button');
+                          for(let btn of selectButton){
+                              btn.addEventListener('click',function(event){
+                                  console.log(event.currentTarget.getAttribute("data-value"));
+                                  var minutesid = event.currentTarget.getAttribute("data-value");
+                                  var messagesPath　= "messages/" + uid + '/' + minutesid;
+                                  //console.log(messagesPath);
+                                  renderMessageobj = renderMessage(messagesPath);
+
+                                  //firebaseの議事録Allへの参照 todo この処理を別の部分でも書く
+                                  var messagesAllPath　= "messagesAll/" + uid + '/' + minutesid;
+                                  //messagesAllRef = firebase.database().ref(messagesAllPath);
+                                  renderMessageAllobj = renderMessageAll(messagesAllPath);
+                              });
+                          }
+                      } else {
+                          document.querySelector('#kyouyuu_content').innerHTML = "議事録はありません";
+                      }
+                  }
+              })
+          };
+
+          function renderMessage(minutespass){
+              //console.log(messagesRef);
+
+              //結果を表示として追加
+              // Firebaseの既存メッセージを表示
+              //DBへのアクセスを取得
+              messagesRef = firebase.database().ref(minutespass);
+              //console.log(messageRef);
+              messagesRef.on('value', (snapshot) => {
+                  let data = snapshot.val();
+                  //console.log(data)
+                  let result = '';
+                  //wait...を消去する処理
+                  document.querySelector('#div1').innerHTML = "";
+                  //firebase内の値を取ってきて表示
+                  for (let i in data) {
+                      console.log(i);
+                      let message = data[i];
+                      result += '<textarea readonly>' +message.minutes + '</textarea>';
+                      document.querySelector('#div1').innerHTML = result;
+                  }
+                  console.log(result);
+              })
+          };
+
+          function renderMessageAll(minutesAllPass){
+              //todo
+              // Firebaseの既存メッセージを表示
+              //DBへのアクセスを取得
+              messagesAllRef = firebase.database().ref(minutesAllPass);
+              console.log(messagesAllRef);
+              messagesAllRef.on('value', (snapshot) => {
+
+                  let data = snapshot.val();
+                  console.log(snapshot);
+                  let result = data.minutesAll;
+
+                  // console.log(result);
+                  document.querySelector('#msg').value = result;
+              })
+          };
+
+
+
+          //----------------------------------logout用関数-----------------------------------
+          function logout(){
+              firebase.auth().onAuthStateChanged((user) => {
+                  firebase.auth().signOut().then(() => {
+                      console.log("ログアウトしました");
+                      window.location.href = 'lp_proto.html';
+                  }).catch((error) => {
+                      console.log(`ログアウト時にエラーが発生しました (${error})`);
+                  });
+              });
+          }
+          //-----------------------------------firebase初期化--------------------------------------
+          //Iinitialize Firebase
+          var firebaseConfig = {
+              apiKey: "AIzaSyApupTZW_6WvuTnf7b3o9AeOgxv4Nsbpuk",
+              authDomain: "gtb-team5.firebaseapp.com",
+              databaseURL: "https://gtb-team5.firebaseio.com",
+              projectId: "gtb-team5",
+              storageBucket: "gtb-team5.appspot.com",
+              messagingSenderId: "663345784773",
+              appId: "1:663345784773:web:9855dd622cd52158"
+          }
+
+          // Initialize Firebase
+          try{
+              firebase.initializeApp(firebaseConfig);
+          }catch (e) {
+              console.log(e);
+          }
+          //----------------------------------ユーザーのidを取得してそこから議事録を表示--------------------
+          //ユーザーが持つ議事録一覧を表示
+          firebase.auth().onAuthStateChanged(function(user) {
+              //ここは非同期処理なので注意。renderMinutes関数はこの場所で呼ぶこと
+              if (user) {
+                  uid = user.uid;
+                  //議事録一覧
+                  renderMinutes(uid);
+
+              } else {
+                  //ログインしてない時はlpに戻ってもらう
+                  window.location.href = 'lp_proto.html';
+              }
+          })
+
+
+          //------------------------------------a-matuo---------------
+
+              $(window).on('load',function(){
+                  $('#content').load('test.html');
+              });
 /*
-                $(function(){
-                $('.js-modal-open').each(function(){
-                    $(this).on('click',function(){
-                        var target = $(this).data('target');
-                        var modal = document.getElementById(target);
-                        $(modal).fadeIn();
-                        return false;
-                    });
-                });
-                $('.js-modal-close').on('click',function(){
-                    $('.js-modal').fadeOut();
-                    return false;
-                }); 
-            });*/
+              $(function(){
+              $('.js-modal-open').each(function(){
+                  $(this).on('click',function(){
+                      var target = $(this).data('target');
+                      var modal = document.getElementById(target);
+                      $(modal).fadeIn();
+                      return false;
+                  });
+              });
+              $('.js-modal-close').on('click',function(){
+                  $('.js-modal').fadeOut();
+                  return false;
+              });
+          });*/
             $(function(){
                 $('#record_button').click(function(){
                         $('#modal01').fadeIn();
@@ -85,40 +250,17 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
                     <div class="dancing_gijigori">
                       <input type="text" placeholder="ファイル名" class="file_name">
-
-
-                      <textarea readonly></textarea>
-                      <textarea readonly></textarea>
-                      <textarea readonly></textarea>
-                      <textarea readonly></textarea> 
-                      <textarea readonly></textarea>
-                      <textarea readonly></textarea>
-                      <textarea readonly></textarea>
-                      <textarea readonly></textarea> 
-                      <textarea readonly></textarea>
-                      <textarea readonly></textarea>
-                      <textarea readonly></textarea>
-                      <textarea readonly></textarea> 
+                        <div id="div1">
+                        </div>
 
                     </div>
                     <div class="gijiroku_area">
                       <textarea></textarea>
                         <img class="large" src="./img/ゴリラダンス.gif">
                         <img class="gijigori_1 large" src="./img/踊るゴリラ.gif">
-                        <img id="record_button" onclick="start_stop()" src="./sozai/start.png">
+                        <img id="start_button" onclick="start_stop()" src="./sozai/start.png">
                     </div>
 
                     
@@ -133,7 +275,7 @@
                           else {
                               num ++;
                           }
-                          document.getElementById("record_button").src=pics_src[num];
+                          document.getElementById("start_button").src=pics_src[num];
                       }
                     </script>
 
@@ -149,7 +291,7 @@
                       <div class="gijiroku_edit">
                         <textarea id="msg" name="user_message"></textarea>
                       </div>
-                      <h2><a href="#" style="text-decoration: none;"><div class="button_10">保存する</div></a></h2>
+                      <h2><a href="" id="save_button" style="text-decoration: none;"><div class="button_10">保存する</div></a></h2>
                     </div>
 
 
@@ -169,25 +311,8 @@
                     <div class="gijiroku_name">議事録アプリ開発MTG</div>
                     <a href="#"><img class="edit_icon" src="img/kyouyuu.png" width="160px"></a>
                   </div>-->
-                  <script>
-                    //結果を表示として追加
-                    // Firebaseの既存メッセージを表示
-                              //Iinitialize Firebase
-                    var firebaseConfig = {
-                        apiKey: "AIzaSyApupTZW_6WvuTnf7b3o9AeOgxv4Nsbpuk",
-                        authDomain: "gtb-team5.firebaseapp.com",
-                        databaseURL: "https://gtb-team5.firebaseio.com",
-                        projectId: "gtb-team5",
-                        storageBucket: "gtb-team5.appspot.com",
-                        messagingSenderId: "663345784773",
-                        appId: "1:663345784773:web:9855dd622cd52158"
-                    }
-                      // Initialize Firebase
-                      try{
-                          firebase.initializeApp(firebaseConfig);
-                      }catch (e) {
-                          console.log(e);
-                      }
+                 <!-- <script>
+                      /*
                     var memberRef = firebase.database().ref('member/n1yHTUipk5bHJZGPNac2snKdLP03');
                       memberRef.on('value', (snapshot) => {
                       let data = snapshot.val();
@@ -198,7 +323,7 @@
                           result += '<div class="gijiroku_line_up"><div class="gijiroku_div"><div class="gijiroku_date">'
                           + minutes.month + '/' + minutes.day + '</div><div class="gijiroku_name">' + minutes.title 
                           +'</div><div><a href="#" style="text-decoration:none;"><div class="button_1 select_btn"><span>選択する</span></div></a><a href="#" style="text-decoration: none;"><div class="button_1"><span>共有する</span></div></a></div></div></div>';
-                          /*+'</div><a href="#"><img class="edit_icon" src="img/kyouyuu.png" width="160px"></a></div></div>';*/
+                          /*+'</div><a href="#"><img class="edit_icon" src="img/kyouyuu.png" width="160px"></a></div></div>';
                           if(result != null) {
                           //この判定を省略するとエラーを吐くので注意
                               document.querySelector('#kyouyuu_content').innerHTML = result;
@@ -207,6 +332,7 @@
                         }
                       }
                     })
+                    */
                    
                    
                   </script>
@@ -267,6 +393,75 @@
 
 
 
-          </div>  
+          </div>
+
+
     </body>
+    <script>
+
+        //--------------------------------------音声認識の処理に関する部分-------------------------------
+        //音声認識の準備・日本語の使用を宣言
+        const speechRecognition = new webkitSpeechRecognition();
+        speechRecognition.lang = 'ja-JP';
+
+        //DOM操作用のオブジェクトを用意
+        const startButton = document.getElementById('start_button');
+        const content = document.getElementById('content');
+
+        startButton.addEventListener('click', function () {
+        //音声認識スタート
+        speechRecognition.start();
+
+        //議事録が設定されてない場合作成
+        if(minutesid == null && messagesRef == null){
+        //DBに新しい議事録を追加
+        var now   = new Date();
+        var month = now.getMonth();    //月
+        var day   = now.getDate();     //日
+
+        //todo タイトルの変更
+        //console.log(memberRef);
+        minutesid = memberRef.push({
+        title: "ギジゴリ",
+        month: month,
+        day  : day
+        }).key;
+
+        //firebaseの議事録への参照 todo この処理を別の部分でも書く
+        var messagesPath　= "messages/" + uid + '/' + minutesid;
+        renderMessageobj = renderMessage(messagesPath);
+
+        //firebaseの議事録Allへの参照 todo この処理を別の部分でも書く
+        var messagesAllPath　= "messagesAll/" + uid + '/' + minutesid;
+
+        //初期化表記でバグるので一度空の値を入れている
+        messagesAllRef = firebase.database().ref(messagesAllPath);
+        //todo この下をコメントアウトするとヌルポが出てバグるので注意・・・
+        var text = null;
+        text = document.querySelector('#msg').value;
+        messagesAllRef.set({'minutesAll':text});
+        renderMessageAllobj = renderMessageAll(messagesAllPath);
+        }
+        });
+
+        speechRecognition.addEventListener('result', function (e) {
+        //音声認識で取得した情報を,HTMLに表示する処理
+        const text = e.results[0][0].transcript;
+        //content.innerText = text;
+        //Firebaseへのデータの書き込み
+        messagesRef.push({
+        minutes: text
+        });
+        });
+
+
+        //保存ボタンの処理
+        const saveButton = document.getElementById('save_button');
+        saveButton.addEventListener('click', function () {
+        var text = null;
+        text = document.querySelector('#msg').value;
+        messagesAllRef.set({'minutesAll':text});
+        });
+
+    </script>
 </html>
