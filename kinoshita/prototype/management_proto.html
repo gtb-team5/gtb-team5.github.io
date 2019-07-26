@@ -19,75 +19,100 @@
             var minutesid = null;
             var messageAllid = null;
 
-            //firebaseの議事録への参照・表記用オブジェクト
+            //firebaseの議事録への参照・表記用オブジェクト todo　議事録選択
             var messagesRef　= null;
             var renderMessageobj = null;
 
-            //firebaseの議事録全体への参照・表記用オブジェクト
+            //firebaseの議事録全体への参照・表記用オブジェクト todo 議事録選択
             var messagesAllRef = null;
             var renderMessageAllobj = null;
 
             //----------------------------------------画面表記用の関数----------------------------------
-            // Firebaseの会員から議事録のメッセージを取得
+            // Firebaseの会員から議事録のメ
+            // ッセージを取得
             function renderMinutes(uid){
                 memberRef = firebase.database().ref('member/'+ uid);
                 memberRef.on('value', (snapshot) => {
                     let data = snapshot.val();
                     let result = '';
                     //firebase内の値を取ってきて表示
-                    for (let i in data) {
-                        let minutes = data[i];
-                        result += '<li>' + minutes.month + '/' + minutes.day + '/' + minutes.title;
+                    //console.log(data);
+                    let keys = Object.keys(data);
+                    //console.log(keys);
+                    for (let i = 0; i < keys.length; i++) {
+                        //todo
+                        let minutes = data[keys[i]];
+                        //console.log(keys[i]);
+                        result += '<li>' + minutes.month + '/' + minutes.day + '/' + minutes.title + '<br>'
+                            + '<button class = "select_button" value="' + keys[i] + '"> 議事録を選択する</button></li>'
+
                         if (result != null) {
                             //この判定を省略するとエラーを吐くので注意
                             document.querySelector('#list').innerHTML = result;
+
+                            const selectButton = document.querySelectorAll('.select_button');
+                            for(let btn of selectButton){
+                                btn.addEventListener('click',function(event){
+                                    console.log(event.currentTarget.value);
+                                    var minutesid = event.currentTarget.value;
+                                    var messagesPath　= "messages/" + uid + '/' + minutesid;
+                                    //console.log(messagesPath);
+                                    renderMessageobj = renderMessage(messagesPath);
+
+                                    //firebaseの議事録Allへの参照 todo この処理を別の部分でも書く
+                                    var messagesAllPath　= "messagesAll/" + uid + '/' + minutesid;
+
+                                    //初期化表記でバグるので一度空の値を入れている
+                                    messagesAllRef = firebase.database().ref(messagesAllPath);
+                                });
+                            }
                         } else {
                             document.querySelector('#list').innerHTML = "議事録はありません";
                         }
                     }
+
                 })
+
+
             };
 
             function renderMessage(minutespass){
+                //console.log(messagesRef);
 
                 //結果を表示として追加
                 // Firebaseの既存メッセージを表示
                 //DBへのアクセスを取得
                 messagesRef = firebase.database().ref(minutespass);
+                //console.log(messageRef);
                 messagesRef.on('value', (snapshot) => {
                     let data = snapshot.val();
+                    //console.log(data)
                     let result = '';
                     //wait...を消去する処理
                     document.querySelector('#div1').innerHTML = "";
                     //firebase内の値を取ってきて表示
                     for (let i in data) {
+                        console.log(i);
                         let message = data[i];
                         result += message.minutes + '<br>';
                         document.querySelector('#div1').innerHTML = result;
                     }
+                    console.log(result);
                 })
             };
 
             function renderMessageAll(minutesAllPass){
                 //todo
-                //結果を表示として追加
+
                 // Firebaseの既存メッセージを表示
                 //DBへのアクセスを取得
                 messagesAllRef = firebase.database().ref(minutesAllPass);
                 messagesAllRef.on('value', (snapshot) => {
                     let data = snapshot.val();
-                    let result = '';
-                    //firebase内の値を取ってきて表示
-                    //表示
-                    document.querySelector('#div2').innerHTML = "";
-                    //firebase内の値を取ってきて表示
-                    for (let i in data) {
-                        let message = data[i];
-                        result += message.minutes + '<br>';
-                        document.querySelector('#div2').innerHTML = result;
-                    }
-                    //document.querySelector('#div2').innerHTML = '<textarea name="area" rows="4" cols="40">' + messageall.minutes + '</textarea>';
+                    let result = data.minutesAll;
 
+                    // console.log(result);
+                    document.querySelector('#div3').value = result;
                 })
             };
 
@@ -135,21 +160,21 @@
                     window.location.href = 'lp_proto.html';
                 }
             })
-
-
         </script>
     </head>
         <p>GIJIGORIのメインページだよ！</p>
         <button type="button" onclick="logout();">ログアウト</button>
         <!--todo  onoffによって議事録の切り替えを行う -->
         <button id="start_button">議事録作成開始だよ！</button>
+        <button id="save_button">保存ボタンだよ！</button>
 
         <div id="content"></div>
 
+        <textarea id="div3" name="area" rows="4" cols="40"></textarea>
+
         <br>
         <div id="div1"></div>
-        <br>
-        <div id="div2"></div>
+
 
         <ol id="list"></ol>
 
@@ -176,17 +201,26 @@
                     var day   = now.getDate();     //日
 
                     //todo タイトルの変更
+                    //console.log(memberRef);
                     minutesid = memberRef.push({
                         title: "ギジゴリ",
                         month: month,
                         day  : day
                     }).key;
-                    //firebaseの議事録への参照
+
+                    //firebaseの議事録への参照 todo この処理を別の部分でも書く
                     var messagesPath　= "messages/" + uid + '/' + minutesid;
                     renderMessageobj = renderMessage(messagesPath);
 
-                    //firebaseの議事録Allへの参照 todo
+                    //firebaseの議事録Allへの参照 todo この処理を別の部分でも書く
                     var messagesAllPath　= "messagesAll/" + uid + '/' + minutesid;
+
+                    //初期化表記でバグるので一度空の値を入れている
+                    messagesAllRef = firebase.database().ref(messagesAllPath);
+                    //todo この下をコメントアウトするとヌルポが出てバグるので注意・・・
+                    var text = null;
+                    text = document.querySelector('#div3').value;
+                    messagesAllRef.set({'minutesAll':text});
                     renderMessageAllobj = renderMessageAll(messagesAllPath);
                 }
             });
@@ -199,17 +233,18 @@
                 messagesRef.push({
                     minutes: text
                 });
-
-                messagesAllRef.push({
-                    //todo
-                    minutes: text
-                });
-
-                messagesAllRef.update({
-                    //todo
-                    minutes: text
-                });
             });
+
+
+            //保存ボタンの処理
+            const saveButton = document.getElementById('save_button');
+            saveButton.addEventListener('click', function () {
+                var text = null;
+                text = document.querySelector('#div3').value;
+                messagesAllRef.set({'minutesAll':text});
+            });
+
+
         </script>
 
 
