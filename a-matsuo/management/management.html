@@ -194,13 +194,9 @@
               });
           });*/
             $(function(){
-                $('#record_button').click(function(){
-                        $('#modal01').fadeIn();
-                        return false;
-                });
-                $('#save_button').click(function(){
+                $('#help').click(function(){
                   $('.js-modal').fadeOut();
-                        $('#modal02').fadeIn();
+                        $('#modal03').fadeIn();
                         return false;
                 });
                 $('.js-modal-close').on('click',function(){
@@ -228,7 +224,7 @@
                 <input id="account" type="radio" name="tab_item">
                 <label class="tab_item" for="account"></label>
                 <div class="header_right">
-                    <span s><a href=""><span>使い方がわからない人へ</span></a></span>
+                    <span s><a id="help" href=""><span>使い方がわからない人へ</span></a></span>
           
                     <a href="#" style="text-decoration: none;">
                       <div class="button_1">
@@ -339,7 +335,7 @@
 
 
 
-<!--×共有画面（終了）-->
+×共有画面（終了）-->
 
                   </div>
                 </div>
@@ -361,39 +357,19 @@
             
 
 <!--モーダルたち-->
-<!--
 
-<div id="modal01" class="modal js-modal">
+
+<div id="modal03" class="modal js-modal">
     <div class="modal__bg js-modal-close"></div>
     <div class="modal__content">
-        <div class="modal_content_div">
-            <p>保存ファイル名</p>
-            <input type="text" class="input_filename">
-            <br>
-            <a id="save_button" class="button_center" href="#"><div class="button_1 button_2"><p>保存する</p></div></a>
-            <br>
-          <a class="js-modal-close hakisuru" href="">破棄する</a>
-        </div>
-    </div>--><!--modal__inner-->
-<!--</div>--><!--modal-->
-<!--<div id="modal02" class="modal js-modal">
-    <div class="modal__bg js-modal-close"></div>
-    <div class="modal__content">
-        <div class="modal_content_div">
-            <p class="gijiroku_save_complete">議事録保存完了</p><br>
-            <a href="#"><div class="button_1 button_2 bgc_green"><p>編集する</p></div></a><br>
-            <a href="#"><div class="button_1 button_2 bgc_yellow"><p>共有する</p></div></a><br>
-            <a href="#"><div class="button_1 button_2 bgc_orange"><p>議事録をとる</p></div></a>
-        </div>
-    </div>--><!--modal__inner-->
-<!--</div>--><!--modal-->
+          <img src="./sozai/help.png">
+    </div><!--modal__inner-->
+    </div><!--modal-->
+</div>
 
 
 
 
-
-
-          </div>
 
 
     </body>

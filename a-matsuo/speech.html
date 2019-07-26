@@ -8,12 +8,15 @@
         var flag_speech = 0;
  
         function vr_function() {
+            //chrome,firefoxに対応
             window.SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
             var recognition = new webkitSpeechRecognition();
             recognition.lang = 'ja';
+            //変換途中の経過を表示  isFinalで変換終了
             recognition.interimResults = true;
+            //音声認識を連続させる 
             recognition.continuous = true;
- 
+
             recognition.onsoundstart = function() {
                 document.getElementById('status').innerHTML = "認識中";
             };
@@ -29,17 +32,14 @@
                 document.getElementById('status').innerHTML = "停止中";
                   vr_function();
             };
- 
+            //話終わった
             recognition.onresult = function(event) {
                 var results = event.results;
                 for (var i = event.resultIndex; i < results.length; i++) {
-                    if (results[i].isFinal)
-                    {
+                    if (results[i].isFinal){
                         document.getElementById('result_text').innerHTML = results[i][0].transcript;
                         vr_function();
-                    }
-                    else
-                    {
+                    }else{
                         document.getElementById('result_text').innerHTML = "[途中経過] " + results[i][0].transcript;
                         flag_speech = 1;
                     }
