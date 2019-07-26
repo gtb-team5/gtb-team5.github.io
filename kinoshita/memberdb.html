@@ -37,11 +37,22 @@
     const startButton = document.getElementById('start_button');
     startButton.addEventListener('click',function() {
         //Firebaseへのデータの書き込み
-
-        messagesRef.push({
+        var now   = new Date();
+        var month = now.getMonth();    //月
+        var day   = now.getDate();     //日
+        console.log(messagesRef.push({
             //memberDBに色々ついか
-            title: "ギジゴリ2"
-        });
+            title: "ギジゴリ2",
+            month: month,
+            day  : day
+        }).key);
+
+
+        /*
+        for(messagesRef) {
+            //todo ここに議事録のIDを入れれるようにする
+            console.log();
+        }*/
     })
 
 </script>
