@@ -45,7 +45,6 @@
                         //console.log(keys[i]);
                         result += '<li>' + minutes.month + '/' + minutes.day + '/' + minutes.title + '<br>'
                             + '<button class = "select_button" value="' + keys[i] + '"> 議事録を選択する</button></li>'
-
                         if (result != null) {
                             //この判定を省略するとエラーを吐くので注意
                             document.querySelector('#list').innerHTML = result;
@@ -69,10 +68,7 @@
                             document.querySelector('#list').innerHTML = "議事録はありません";
                         }
                     }
-
                 })
-
-
             };
 
             function renderMessage(minutespass){
