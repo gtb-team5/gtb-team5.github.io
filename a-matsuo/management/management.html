@@ -1,0 +1,272 @@
+<html>
+    <meta charset="UTF-8">
+    <title>GIJIGORI</title>
+    <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src = "https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+        <script src = "https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        <meta charset="UTF-8"> 
+        <script>
+                $(window).on('load',function(){
+                    $('#content').load('test.html');
+                });
+/*
+                $(function(){
+                $('.js-modal-open').each(function(){
+                    $(this).on('click',function(){
+                        var target = $(this).data('target');
+                        var modal = document.getElementById(target);
+                        $(modal).fadeIn();
+                        return false;
+                    });
+                });
+                $('.js-modal-close').on('click',function(){
+                    $('.js-modal').fadeOut();
+                    return false;
+                }); 
+            });*/
+            $(function(){
+                $('#record_button').click(function(){
+                        $('#modal01').fadeIn();
+                        return false;
+                });
+                $('#save_button').click(function(){
+                  $('.js-modal').fadeOut();
+                        $('#modal02').fadeIn();
+                        return false;
+                });
+                $('.js-modal-close').on('click',function(){
+                    $('.js-modal').fadeOut();
+                    return false;
+                }); 
+            });
+
+
+        </script>
+        <link rel="stylesheet" type="text/css" href="management.css">
+        <link rel="stylesheet" type="text/css" href="modal_style.css">
+    </head>
+    <body>
+      <div class="main">
+
+            <div class="tabs">
+                <img class="logo_s" src="./sozai/logo_s.png">
+                <input id="record" type="radio" name="tab_item" checked>
+                <label class="tab_item" for="record"></label>
+                <input id="edit" type="radio" name="tab_item">
+                <label class="tab_item" for="edit"></label>
+                <input id="share" type="radio" name="tab_item">
+                <label class="tab_item" for="share"></label>
+                <input id="account" type="radio" name="tab_item">
+                <label class="tab_item" for="account"></label>
+                <div class="header_right">
+                    <span s><a href=""><span>使い方がわからない人へ</span></a></span>
+          
+                    <a href="#" style="text-decoration: none;">
+                      <div class="button_1">
+                          <span>ログアウトする</span>
+                      </div>
+                    </a>
+                    
+                    <div class="user"></div>
+                      
+                  </div>
+
+
+                <div class="tab_content" id="record_content">
+                <div class="tab_content_record">
+
+
+                      
+<!--〇録音画面（開始）　-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="dancing_gijigori">
+                      <input type="text" placeholder="ファイル名" class="file_name">
+
+
+                      <textarea readonly></textarea>
+                      <textarea readonly></textarea>
+                      <textarea readonly></textarea>
+                      <textarea readonly></textarea> 
+                      <textarea readonly></textarea>
+                      <textarea readonly></textarea>
+                      <textarea readonly></textarea>
+                      <textarea readonly></textarea> 
+                      <textarea readonly></textarea>
+                      <textarea readonly></textarea>
+                      <textarea readonly></textarea>
+                      <textarea readonly></textarea> 
+
+                    </div>
+                    <div class="gijiroku_area">
+                      <textarea></textarea>
+                        <img class="large" src="./img/ゴリラダンス.gif">
+                        <img class="gijigori_1 large" src="./img/踊るゴリラ.gif">
+                        <img id="record_button" onclick="start_stop()" src="./sozai/start.png">
+                    </div>
+
+                    
+                    <script>
+                      var pics_src = new Array("./sozai/start.png","./sozai/stop.png");
+                      var num = 0;
+          
+                      function start_stop(){
+                          if (num == 1) {
+                              num = 0;
+                          }
+                          else {
+                              num ++;
+                          }
+                          document.getElementById("record_button").src=pics_src[num];
+                      }
+                    </script>
+
+<!--〇録音画面（終了）　-->
+                  </div>
+                </div>
+                <div class="tab_content" id="edit_content">
+                  <div class="tab_content_description">
+<!--△編集画面（開始）　-->
+
+
+                    <div class="gijiroku_line_up">
+                      <div class="gijiroku_edit">
+                        <textarea id="msg" name="user_message"></textarea>
+                      </div>
+                      <h2><a href="#" style="text-decoration: none;"><div class="button_10">保存する</div></a></h2>
+                    </div>
+
+
+
+
+<!--△編集画面（終了）　-->
+                  </div>
+                </div>
+                <div class="tab_content" id="share_content">
+                  <div class="tab_content_description" id="kyouyuu_content">
+
+<!--×共有画面（開始）-->
+                <!--型
+                <div class="gijiroku_line_up">
+                  <div class="gijiroku_div">
+                    <div class="gijiroku_date">11/23</div>
+                    <div class="gijiroku_name">議事録アプリ開発MTG</div>
+                    <a href="#"><img class="edit_icon" src="img/kyouyuu.png" width="160px"></a>
+                  </div>-->
+                  <script>
+                    //結果を表示として追加
+                    // Firebaseの既存メッセージを表示
+                              //Iinitialize Firebase
+                    var firebaseConfig = {
+                        apiKey: "AIzaSyApupTZW_6WvuTnf7b3o9AeOgxv4Nsbpuk",
+                        authDomain: "gtb-team5.firebaseapp.com",
+                        databaseURL: "https://gtb-team5.firebaseio.com",
+                        projectId: "gtb-team5",
+                        storageBucket: "gtb-team5.appspot.com",
+                        messagingSenderId: "663345784773",
+                        appId: "1:663345784773:web:9855dd622cd52158"
+                    }
+                      // Initialize Firebase
+                      try{
+                          firebase.initializeApp(firebaseConfig);
+                      }catch (e) {
+                          console.log(e);
+                      }
+                    var memberRef = firebase.database().ref('member/n1yHTUipk5bHJZGPNac2snKdLP03');
+                      memberRef.on('value', (snapshot) => {
+                      let data = snapshot.val();
+                      let result = '';
+                      //firebase内の値を取ってきて表示
+                      for (let i in data) {
+                          let minutes = data[i];
+                          result += '<div class="gijiroku_line_up"><div class="gijiroku_div"><div class="gijiroku_date">'
+                          + minutes.month + '/' + minutes.day + '</div><div class="gijiroku_name">' + minutes.title 
+                          +'</div><div><a href="#" style="text-decoration:none;"><div class="button_1 select_btn"><span>選択する</span></div></a><a href="#" style="text-decoration: none;"><div class="button_1"><span>共有する</span></div></a></div></div></div>';
+                          /*+'</div><a href="#"><img class="edit_icon" src="img/kyouyuu.png" width="160px"></a></div></div>';*/
+                          if(result != null) {
+                          //この判定を省略するとエラーを吐くので注意
+                              document.querySelector('#kyouyuu_content').innerHTML = result;
+                          }else{
+                              document.querySelector('#kyouyuu_content').innerHTML = "議事録はありません";
+                        }
+                      }
+                    })
+                   
+                   
+                  </script>
+
+
+
+<!--×共有画面（終了）-->
+
+                  </div>
+                </div>
+                <div class="tab_content" id="account_content">
+                  <div class="tab_content_description">
+<!--管理画面（開始）-->
+
+
+                <p class="c-txtsp"><img src="img/use.png" alt="usr"></p>
+
+
+
+<!--管理画面（終了）-->
+
+
+                  </div>
+                </div>
+            </div>
+            
+
+<!--モーダルたち-->
+<!--
+
+<div id="modal01" class="modal js-modal">
+    <div class="modal__bg js-modal-close"></div>
+    <div class="modal__content">
+        <div class="modal_content_div">
+            <p>保存ファイル名</p>
+            <input type="text" class="input_filename">
+            <br>
+            <a id="save_button" class="button_center" href="#"><div class="button_1 button_2"><p>保存する</p></div></a>
+            <br>
+          <a class="js-modal-close hakisuru" href="">破棄する</a>
+        </div>
+    </div>--><!--modal__inner-->
+<!--</div>--><!--modal-->
+<!--<div id="modal02" class="modal js-modal">
+    <div class="modal__bg js-modal-close"></div>
+    <div class="modal__content">
+        <div class="modal_content_div">
+            <p class="gijiroku_save_complete">議事録保存完了</p><br>
+            <a href="#"><div class="button_1 button_2 bgc_green"><p>編集する</p></div></a><br>
+            <a href="#"><div class="button_1 button_2 bgc_yellow"><p>共有する</p></div></a><br>
+            <a href="#"><div class="button_1 button_2 bgc_orange"><p>議事録をとる</p></div></a>
+        </div>
+    </div>--><!--modal__inner-->
+<!--</div>--><!--modal-->
+
+
+
+
+
+
+          </div>  
+    </body>
+</html>
