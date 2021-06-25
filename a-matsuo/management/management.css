@@ -1,336 +1,394 @@
-*{
-    margin:0;
-    padding:0;
+* {
+    margin: 0;
+    padding: 0;
     font-family: 'Kosugi Maru', sans-serif;
 }
+
 /*コンテンツ内に発生するスクロールバーのCSS*/
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     width: 10px;
 }
-::-webkit-scrollbar-track{
+
+::-webkit-scrollbar-track {
     background: #fff;
 }
-::-webkit-scrollbar-thumb{
+
+::-webkit-scrollbar-thumb {
     background: #ccc;
     border-radius: 10px;
     box-shadow: inset 0 0 0 2px #fff;
 }
 
-body{
-    background:linear-gradient(180deg,#fbb03b 0%,#fbb03b 50%,#f5f5f5 50%,#f5f5f5 100%);
-    font-family: 'Kosugi Maru', sans-serif; 
+body {
+    background: linear-gradient(180deg, #fbb03b 0%, #fbb03b 50%, #f5f5f5 50%, #f5f5f5 100%);
+    font-family: 'Kosugi Maru', sans-serif;
 }
-/*ヘッダーの中身*/
-.header_right{
-    font-size:0.7em;
-    float:right;
-  /*  padding-top:30px;*/
-    height:80px;
-}
-.header_right > *{
-    display:inline-block;
 
-    margin:0;
+/*ヘッダーの中身*/
+.header_right {
+    font-size: 0.7em;
+    float: right;
+    /*  padding-top:30px;*/
+    height: 80px;
+}
+
+.header_right>* {
+    display: inline-block;
+
+    margin: 0;
     vertical-align: middle
 }
-.header_right span a{
-	color: #333;
+
+.header_right span a {
+    color: #333;
 }
-.user{
-	/*position: absolute;
+
+.user {
+    /*position: absolute;
 	top: 6px;
 	right: 100px;*/
-	width: 80px;
-	height: 80px;
-	background-color: #A7A7A7;
+    width: 80px;
+    height: 80px;
+    background-color: #A7A7A7;
     border-radius: 80px / 80px;
-    display:inline-block;
+    display: inline-block;
 }
 
 
-.button_1 span{
-	text-decoration: none;
-	color:#fff;
+.button_1 span {
+    text-decoration: none;
+    color: #fff;
 }
-.button_1{
-    display:inline-block;
+
+.button_1 {
+    display: inline-block;
     font-weight: bold;
     padding: 15px 30px;
     background-color: #0b8457;
     color: #fff;
     border-style: none;
-    border-radius:20px;
-}
-.button_2{
-    background:#fbb03b;
-    width:60%;
-    border-radius:10px;
-    margin-bottom:20px;
-}
-.bgc_green{
-    background-color: #0b8457;
-}
-.bgc_yellow{
-    background-color: #ffff00; 
-}
-.bgc_yellow p{
-    color: #555555;
-}
-.bgc_orange p{
-    color: #555555;
-}
-.main{
-    margin:0 auto;
-    width:90%;
-    min-width:950px;
-}
-input[type="radio"]{
-    display:none;
-}
-input[type="radio"] + label {
-    background-repeat: no-repeat;
-    background-size:contain;
-    float:left;
-    width: 100px;
-    height:70px;
-}
-.logo_s{
-    float:left;
-    width: 60px;
-    height:60px;
-    margin-top:25px;
-    margin-right:10px;
+    border-radius: 20px;
 }
 
-#record + label{
- 
-    margin-top:20px;
-    background-image:url("./sozai/record.png");
+.button_2 {
+    background: #fbb03b;
+    width: 60%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.bgc_green {
+    background-color: #0b8457;
+}
+
+.bgc_yellow {
+    background-color: #ffff00;
+}
+
+.bgc_yellow p {
+    color: #555555;
+}
+
+.bgc_orange p {
+    color: #555555;
+}
+
+.main {
+    margin: 0 auto;
+    width: 90%;
+    min-width: 950px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]+label {
+    background-repeat: no-repeat;
+    background-size: contain;
+    float: left;
+    width: 100px;
+    height: 70px;
+}
+
+.logo_s {
+    float: left;
+    width: 60px;
+    height: 60px;
+    margin-top: 25px;
+    margin-right: 10px;
+}
+
+#record+label {
+
+    margin-top: 20px;
+    background-image: url("./sozai/record.png");
     display: inline-block;
 }
-#record:checked + label , #record + label:hover{
-    background-image:url("./sozai/record_hover.png");
+
+#record:checked+label,
+#record+label:hover {
+    background-image: url("./sozai/record_hover.png");
 }
-#edit + label{
- 
-    background-image:url("./sozai/edit.png");
-    margin-top:20px;
+
+#edit+label {
+
+    background-image: url("./sozai/edit.png");
+    margin-top: 20px;
     display: inline-block;
 }
-#edit:checked + label,#edit + label:hover{
-    background-image:url("./sozai/edit_hover.png");
+
+#edit:checked+label,
+#edit+label:hover {
+    background-image: url("./sozai/edit_hover.png");
 }
-#share + label{
-    
-    background-image:url("./sozai/share.png");
-    margin-top:20px;
+
+#share+label {
+
+    background-image: url("./sozai/share.png");
+    margin-top: 20px;
     display: inline-block;
 }
-#share:checked + label ,#share + label:hover{
-    background-image:url("./sozai/share_hover.png");
+
+#share:checked+label,
+#share+label:hover {
+    background-image: url("./sozai/share_hover.png");
 }
-#account + label{
-  /*  position: relative;*/
-    background-image:url("./sozai/account.png");
-    margin-top:20px;
+
+#account+label {
+    /*  position: relative;*/
+    background-image: url("./sozai/account.png");
+    margin-top: 20px;
     display: inline-block;
 }
-#account:checked + label,#account + label:hover{
-    background-image:url("./sozai/account_hover.png");
+
+#account:checked+label,
+#account+label:hover {
+    background-image: url("./sozai/account_hover.png");
 }
+
 .tab_content {
     display: none;
-    width:100%;
-    height:80%;
+    width: 100%;
+    height: 80%;
     overflow: auto;
-    overflow-x:hidden;
+    overflow-x: hidden;
     background-color: #fff;
-  }
-#record:checked ~ #record_content,
-#edit:checked ~ #edit_content,
-#share:checked ~ #share_content,
-#account:checked ~ #account_content {
-  display: block;
 }
-#record:checked ~ #record_content{
+
+#record:checked~#record_content,
+#edit:checked~#edit_content,
+#share:checked~#share_content,
+#account:checked~#account_content {
+    display: block;
+}
+
+#record:checked~#record_content {
     overflow: hidden;
 }
 
 
 
 /*録音のCSS*/
-.tab_content_record{
-    display:flex;
-    height:100%;
+.tab_content_record {
+    display: flex;
+    height: 100%;
 }
-.dancing_gijigori{
-    border-right:1px solid black;
-    flex-grow:1;
-    width:100px;
-    position:relative;
-    padding-top:50px;
-    overflow:auto;
+
+.dancing_gijigori {
+    border-right: 1px solid black;
+    flex-grow: 1;
+    width: 100px;
+    position: relative;
+    padding-top: 50px;
+    overflow: auto;
     overflow-x: hidden;
 }
-.large{
-    width:30%;
-    display:inline;
+
+.large {
+    width: 30%;
+    display: inline;
 }
-.gijigori_1{
-    margin-left:38%;
+
+.gijigori_1 {
+    margin-left: 38%;
 }
-.file_name{
-    width:75%;
-    display:block;
-    margin:auto;
-    top:10px;
-    left:10%;
-    padding:10px;
-    position:absolute;
+
+.file_name {
+    width: 75%;
+    display: block;
+    margin: auto;
+    top: 10px;
+    left: 10%;
+    padding: 10px;
+    position: absolute;
 }
-.gijiroku_area{
-    flex-grow:1;
-    width:100px;
+
+.gijiroku_area {
+    flex-grow: 1;
+    width: 100px;
     position: relative;
 }
-.gijiroku_area>textarea{
-    width:100%;
-    height:60%;
-    overflow:auto;
+
+.gijiroku_area>textarea {
+    width: 100%;
+    height: 60%;
+    overflow: auto;
     overflow-x: hidden;
     resize: none;
-    padding-left:10%;
+    padding-left: 10%;
 }
-#div1 > textarea{
-    width:75%;
-    display:block;
-    margin:auto;
-    margin-top:15px;
+
+#div1>textarea {
+    width: 75%;
+    display: block;
+    margin: auto;
+    margin-top: 15px;
     resize: none;
-    border-radius:40px;
-    background-color:  #f5f5f5;
+    border-radius: 40px;
+    background-color: #f5f5f5;
     outline: none;
     padding: 5px 10px;
 }
 
 
 
-#canvas{
-    height:100%;
-    width:100%;
+#canvas {
+    height: 100%;
+    width: 100%;
 }
-#start_button{
-    width:100px;
-    height:100px;
-    position:absolute;
-    left:-50px;
+
+#start_button {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: -50px;
     top: 50%;
-    margin:-50px auto 0;
+    margin: -50px auto 0;
     border-radius: 50%;
 }
-.input_filename{
-    border:1px solid #ccc; 
-    padding:10px 5px;
-    margin-bottom:20%;
-    margin-top:10%;
-    width:80%;
+
+.input_filename {
+    border: 1px solid #ccc;
+    padding: 10px 5px;
+    margin-bottom: 20%;
+    margin-top: 10%;
+    width: 80%;
 }
-.hakisuru{
-    margin-left:60%;
+
+.hakisuru {
+    margin-left: 60%;
 }
-.gijiroku_save_complete{
-    font-size:1.4em;
+
+.gijiroku_save_complete {
+    font-size: 1.4em;
 }
 
 
 
 
 /*選択のCSS*/
-.gijiroku_line_up{
-width:80%;
-margin:0 auto;
-border-radius:40px;
-background-color:  #f5f5f5;
-margin-top:20px;
+.gijiroku_line_up {
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 40px;
+    background-color: #f5f5f5;
+    margin-top: 20px;
 }
 
-.center{
-    text-align:center;
+.center {
+    text-align: center;
 }
-.gijiroku_div{
-    display:flex;
+
+.gijiroku_div {
+    display: flex;
     align-items: center;
-    padding:5px 15px 5px 5px;
+    padding: 5px 15px 5px 5px;
 }
-.gijiroku_date{
-    color:white;
-    width:80px;
-    height:80px;
+
+.gijiroku_date {
+    color: white;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     background-color: black;
     display: -webkit-flex;
     display: flex;
-    -webkit-align-items: center; /* 縦方向中央揃え（Safari用） */
-    align-items: center; /* 縦方向中央揃え */
-    -webkit-justify-content: center; /* 横方向中央揃え（Safari用） */
-    justify-content: center; /* 横方向中央揃え */
-    margin-right:15px;
+    -webkit-align-items: center;
+    /* 縦方向中央揃え（Safari用） */
+    align-items: center;
+    /* 縦方向中央揃え */
+    -webkit-justify-content: center;
+    /* 横方向中央揃え（Safari用） */
+    justify-content: center;
+    /* 横方向中央揃え */
+    margin-right: 15px;
 }
-.gijiroku_name{
-    font-size:1.3em;
+
+.gijiroku_name {
+    font-size: 1.3em;
 }
-.gijiroku_div > :last-child {
-    margin-left:auto;
+
+.gijiroku_div> :last-child {
+    margin-left: auto;
 }
-.select_btn{
-    margin-right:10px;
+
+.select_btn {
+    margin-right: 10px;
 }
-.gijiroku_line_up h2{
-    position:relative;
-    left:370px;
+
+.gijiroku_line_up h2 {
+    position: relative;
+    left: 370px;
 }
-.gijiroku_div > textarea{
-    padding:20px 0px;
-    width:500px;
-    height:480px;
+
+.gijiroku_div>textarea {
+    padding: 20px 0px;
+    width: 500px;
+    height: 480px;
 }
-.button_10{
-    font-size:1em;
-    font-weight:bold;
-    padding:20px 20px;
-    margin:20px 0px;
-    background-color:#0b8457;
-    color:#fff;
-    border-radius:20px;
-    width:20%;
-    text-align:center;
+
+.button_10 {
+    font-size: 1em;
+    font-weight: bold;
+    padding: 20px 20px;
+    margin: 20px 0px;
+    background-color: #0b8457;
+    color: #fff;
+    border-radius: 20px;
+    width: 20%;
+    text-align: center;
 }
-.gijiroku_edit{
-    text-align:center;
-    width:80%;
-    padding-top:20px;
-    margin:0 auto;
-    border-radius:40px;
-    background-color:#f5f5f5;
-    margin-top:20px;
+
+.gijiroku_edit {
+    text-align: center;
+    width: 80%;
+    padding-top: 20px;
+    margin: 0 auto;
+    border-radius: 40px;
+    background-color: #f5f5f5;
+    margin-top: 20px;
 }
-.gijiroku_edit > textarea{
-    padding:20px 0px;
-    width:80%;
-    height:70%;
+
+.gijiroku_edit>textarea {
+    padding: 20px 0px;
+    width: 80%;
+    height: 70%;
     resize: none;
 }
-.gijiroku_edit > h2{
-    position:relative;
-    margin-left:40%;
+
+.gijiroku_edit>h2 {
+    position: relative;
+    margin-left: 40%;
 }
+
 h2 {
     border-style: none;
 }
 
 
-.c-txtsp{
+.c-txtsp {
     display: flex;
     justify-content: center;
-   padding: 40px;
-  }
+    padding: 40px;
+}
