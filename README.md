@@ -2,7 +2,7 @@
 
 * * *
 ### 簡単すぎてウホウホ言っちゃうリアルタイム議事録サービス
-https://gtb-team5.github.io/a-matsuo/GIJIGORI/index.html
+https://gtb-team5.github.io/GIJIGORI/index.html
 
 ### 使用法
 再生ボタンをクリックすると新しく議事録が作成され音声認識が開始されます。<br>
