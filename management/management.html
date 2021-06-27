@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <script>
 
-        //-----------------------------------kinoshita----------------------------------------------------
+
 
         //------------------------------------議事録やユーザーに関する変数やfirebaseへの参照用変数---------------
         //ユーザーに関する定義と参照
@@ -43,20 +43,12 @@
                 let data = snapshot.val();
                 let result = '';
                 //firebase内の値を取ってきて表示
-                //console.log(data);
                 let keys = Object.keys(data);
-                //console.log(keys);
                 for (let i = 0; i < keys.length; i++) {
-                    //todo
                     let minutes = data[keys[i]];
-                    //console.log(keys[i]);
                     result += '<div class="gijiroku_line_up"><div class="gijiroku_div"><div class="gijiroku_date">'
                         + minutes.month + '/' + minutes.day + '</div><div class="gijiroku_name">' + minutes.title
                         + '</div><div><a href="#" class="select_button" style="text-decoration:none;" data-value="' + keys[i] + '"><div class="button_1 select_btn"><span>選択する</span></div></a><a href="#" style="text-decoration: none;"><div class="button_1"><span>共有する</span></div></a></div></div></div>';
-                    //+'</div><a href="#"><img class="edit_icon" src="img/kyouyuu.png" width="160px"></a></div></div>';
-
-
-
 
 
                     if (result != null) {
@@ -126,7 +118,6 @@
                 document.querySelector('#msg').value = result;
             })
         };
-
 
 
         //----------------------------------logout用関数-----------------------------------
@@ -303,43 +294,6 @@
             <div class="tab_content" id="share_content">
                 <div class="tab_content_description" id="kyouyuu_content">
 
-                    <!--×共有画面（開始）-->
-                    <!--型
-                <div class="gijiroku_line_up">
-                  <div class="gijiroku_div">
-                    <div class="gijiroku_date">11/23</div>
-                    <div class="gijiroku_name">議事録アプリ開発MTG</div>
-                    <a href="#"><img class="edit_icon" src="img/kyouyuu.png" width="160px"></a>
-                  </div>-->
-                    <!-- <script>
-                      /*
-                    var memberRef = firebase.database().ref('member/n1yHTUipk5bHJZGPNac2snKdLP03');
-                      memberRef.on('value', (snapshot) => {
-                      let data = snapshot.val();
-                      let result = '';
-                      //firebase内の値を取ってきて表示
-                      for (let i in data) {
-                          let minutes = data[i];
-                          result += '<div class="gijiroku_line_up"><div class="gijiroku_div"><div class="gijiroku_date">'
-                          + minutes.month + '/' + minutes.day + '</div><div class="gijiroku_name">' + minutes.title 
-                          +'</div><div><a href="#" style="text-decoration:none;"><div class="button_1 select_btn"><span>選択する</span></div></a><a href="#" style="text-decoration: none;"><div class="button_1"><span>共有する</span></div></a></div></div></div>';
-                          /*+'</div><a href="#"><img class="edit_icon" src="img/kyouyuu.png" width="160px"></a></div></div>';
-                          if(result != null) {
-                          //この判定を省略するとエラーを吐くので注意
-                              document.querySelector('#kyouyuu_content').innerHTML = result;
-                          }else{
-                              document.querySelector('#kyouyuu_content').innerHTML = "議事録はありません";
-                        }
-                      }
-                    })
-                    */
-                   
-                   
-                  </script>
-
-
-
-×共有画面（終了）-->
 
                 </div>
             </div>
