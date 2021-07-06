@@ -5,7 +5,7 @@
 https://gtb-team5.github.io/lp/index.html
 
 ### 認証
-mail=crpersher@gmail.com
+mail=crpersher@gmail.com  
 pass=123456
 
 ### 使用法
